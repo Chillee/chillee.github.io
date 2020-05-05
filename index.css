@@ -29,6 +29,7 @@ span {
 nav {
     color: #51a012;
     font-family: Verdana,Tahoma,Geneva,sans-serif;
+    margin: auto;
 }
 
 .container img {
@@ -101,7 +102,7 @@ MENU STYLES
 }
 
 .menu__link{
-  padding: 1.5rem 1.5rem;
+  padding: 1.5rem 0rem;
 
   font-weight: 700;
   color: rgb(0, 0, 0);
@@ -160,12 +161,5 @@ MENU STYLES
 DEMO
 =====
 */
-
-@media (min-width: 1500px){
-
-  html{
-    font-size: 62.5%;
-  }
-}
 
 

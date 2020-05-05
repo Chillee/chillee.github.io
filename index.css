@@ -1,4 +1,10 @@
-
+.name {
+  color: #666;
+}
+hr {
+  width: 100%;
+  float: left;
+}
 body {
     margin: 40px auto;
     max-width: 900px;
@@ -88,8 +94,14 @@ MENU STYLES
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 1px 2px 0 rgba(0, 0, 0, .24);
 }
 
+.select__link::before,
+.select__link::after{
+  width: 100% !important;
+  background-color: rgb(252, 185, 109);
+}
+
 .menu__link{
-  padding: 2rem 1.5rem;
+  padding: 1.5rem 1.5rem;
 
   font-weight: 700;
   color: rgb(0, 0, 0);

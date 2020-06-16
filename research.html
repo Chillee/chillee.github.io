@@ -11,6 +11,9 @@
       width: 250px;
       padding-right: 10px;
     }
+    li.research_item {
+      width: 100%;
+    }
     </style>
 
 </head>
@@ -29,21 +32,23 @@
 <body>
     <h1>Research</h1>
     <ul>
-    <li>
+    <li class="research_item">
       <div class="container grid-item">
         <img src="img/ILA.jpg" width="200px" style="float:left">
       </div>
       <b> Enhancing Adversarial Example Transferability with an Intermediate Level Attack </b>
       <br>
-      Qian Huang*, Isay Katsman*, <b>Horace He*</b>, Zeqi Gu*, Serge Belongie, Ser-Nam Lim
+      <b>Horace He*</b>, Qian Huang*, Isay Katsman*, Zeqi Gu*, Serge Belongie, Ser-Nam Lim
       <br>
       <a href="http://iccv2019.thecvf.com/">ICCV 2019</a>
       <br>
       [<a href="https://arxiv.org/abs/1907.10823">Paper</a>] [<a href="https://slideslive.com/38922555/contributed-talk-5-enhancing-adversarial-example-transferability-with-an-intermediate-level-attack">Talk at WIML Workshop</a>] [<a href="https://twitter.com/cHHillee/status/1201705688898113536">Twitter Thread</a>] [<a href="https://news.cornell.edu/stories/2019/11/cs-undergrads-research-sets-sights-image-hackers">Cornell Chronicle</a>]
+      <br>
+      <b>TL;DR</b>: By optimizing the projection of our perturbation onto an existing perturbation in the feature space, we can improve transferability.
     </li>
     <hr>
 
-    <li>
+    <li class="research_item">
       <div class="container grid-item">
         <img src="img/decomposition.jpg" width="200px" style="float:left">
       </div>
@@ -54,6 +59,8 @@
       <a href="https://icml2019workshop.github.io/">ICML Workshop on Security and Privacy of Machine Learning</a>
       <br>
       [<a href="https://arxiv.org/abs/1812.01198">Paper</a>]
+      <br>
+      <b>TL;DR</b>: If you take the vector projection from a transferable perturbation to a regular perturbation, you get an extremely <b>non</b>-transferable perturbation.
     </li>
 
     </ul>

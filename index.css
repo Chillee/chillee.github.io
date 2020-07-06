@@ -82,6 +82,7 @@ MENU STYLES
 
 .menu__group{
   flex-grow: 1;
+  font-size: 15px;
 }
 
 .menu__link{
@@ -102,7 +103,7 @@ MENU STYLES
 }
 
 .menu__link{
-  padding: 1.5rem 0rem;
+  padding: 0.8rem 0rem;
 
   font-weight: 700;
   color: rgb(0, 0, 0);

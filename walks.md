@@ -139,7 +139,7 @@ This is also where the previously mentioned HN commenter thought the problem end
 To go even deeper, we must first take a detour into linear recurrences and generating functions.
 
 ### Linear Recurrences
-A linear recurrence is a recurrence like: $f_k = 3f_{k-1} + 2f_{k-2} - f_{k-3}$. The Fibonacci series is a famous linear recurrence, which can be written as $f_k = f_{k-1} + f_{k-2}$. The order of a linear recurrence is the number of terms it depends on. So, the first example would have order 3, and Fibonacci would have order 2.
+A linear recurrence is a recurrence like: $a_k = 3a_{k-1} + 2a_{k-2} - a_{k-3}$. The Fibonacci series is a famous linear recurrence, which can be written as $A_k = A_{k-1} + A_{k-2}$. The order of a linear recurrence is the number of terms it depends on. So, the first example would have order 3, and Fibonacci would have order 2.
 
 You might know that finding the $K$-th Fibonacci number can be done in $\log(K)$ time using matrix exponentiation. In fact, you can find the $K$-th term of any order $N$ linear recurrence using matrix exponentiation in $O(N^3 \log K)$ time. This is a [good resource if you're unfamiliar](https://community.topcoder.com/tc?module=Static&d1=features&d2=010408). This is simply an extension of Fast Fibonacci methods like [those found here](https://www.nayuki.io/page/fast-fibonacci-algorithms).
 
@@ -150,8 +150,8 @@ Let's define a (weird) function $G$, which takes in any polynomial and replaces 
 $G(x^0)=1$, $G(x^1) = 1$, $G(x^2) = 2$, $G(x^3)=3$, $G(x^4)=5$, $G(x^5)=8$, and $G(x^k) = k$-th Fibonacci element. We can also pass in more than one term, so $G(x^2 + x^3) = G(x^2) + G(x^3) = 5$. Finally, $G$ is also a linear function, which means that $G(f+g) = G(f) + G(g)$.
 
 Some more examples:
-\[G(x(x^2 + 2x^3)) = G(x^3 + 2x^4) = F_3 + 2F_4 = 3 + 2\cdot 5 = 13 \]
-\[G(x^{20} + 3) = F_{20} + 3F_0 = 6765 + 3 = 6768\]
+\[G(x(x^2 + 2x^3)) = G(x^3 + 2x^4) = A_3 + 2A_4 = 3 + 2\cdot 5 = 13 \]
+\[G(x^{20} + 3) = A_{20} + 3A_0 = 6765 + 3 = 6768\]
 
 So, if someone gave us a magical black box to evaluate $G$, we could simply evaluate $G(x^k)$ and get our answer! Unfortunately, we don't. If $K$ was small enough, we could compute the terms up to $k$ ourselves. But since $K$ is extremely large, that approach isn't feasible.
 
@@ -168,9 +168,9 @@ Before linear recurrences become useful, we need to introduce one more concept: 
 
 This last statement is clearly true. After all, that's the definition of Fibonacci.
 
-This observation leads to an easy way of generating annihilators: We just use the definition of our linear recurrence! If the n-th term of our linear recurrence is some combination of the previous terms, then the n-th term minus those previous terms is equal to 0.
+This observation leads to an easy way of generating annihilators: We just use the definition of our linear recurrence! If the n-th term of our linear recurrence is some combination of the previous terms, then the n-th term minus those previous terms is equal to $0$.
 
-For illustratoin, let's take the linear recurrence $f_n = f_{n-1} - 2f_{n-2} + 3f_{n-3}$. Thus, $f_3 = f_2 - 2f_1 + 3f_0$. This implies that $f_3 - f_2 + 2f_1 - 3f_0 = 0$. Thus, one annihilator is $x^3 - x^2 + 2x - 3$. We can repeat this process with $f_4$ to get the annihilator $x^4 - x^3 + 2x^2 - 3x$ or $f_{100}$ to get the annihilator $x^{100} - x^{99} + 2x^{98} - 3x^{97}$. Note that we can also generate these other annihilators by multiplying the annihilator for $f_3$ by $x^n$.
+For illustration, let's take the linear recurrence $a_n = a_{n-1} - 2a_{n-2} + 3a_{n-3}$. Thus, $a_3 = a_2 - 2a_1 + 3a_0$. This implies that $a_3 - a_2 + 2a_1 - 3a_0 = 0$. Thus, one annihilator is $x^3 - x^2 + 2x - 3$. We can repeat this process with $a_4$ to get the annihilator $x^4 - x^3 + 2x^2 - 3x$ or $a_{100}$ to get the annihilator $x^{100} - x^{99} + 2x^{98} - 3x^{97}$. Note that we can also generate these other annihilators by multiplying the annihilator for $a_3$ by $x^n$.
 
 Since $G(fx) = G(fx^2) = G(fx^3)  = ...= 0$, this means that $G(fg) = 0$, where $g$ can be any polynomial. For example, $G(f(x^3 + x^7)) = G(fx^3 + fx^7) = G(fx^3) + G(fx^7) = 0$.
 

@@ -190,7 +190,7 @@ So, if we could easily compute a polynomial $h$ with low degree such that $G(x^k
 
 #### Annihilation
 
-In order to compute linear recurrences quickly, we need to introduce one more concept - the ominously named "annihilator" polynomial. An annihilator is a non-zero polynomial $f$ such that $G(f) = 0$. On Fibonacci, for example, examples of annihilators would be $G(x^3 - x^2 - x^1)$ or $G(x^6 - x^5 - x^4)$. Remember that $G$ turns polynomial terms into Fibonacci terms. So, another way to view this last annihilator is that it says: "the 6th Fibonacci term is equal to the 5th and 4th Fibonacci terms added together".
+In order to compute linear recurrences quickly, we need to introduce one more concept - the ominously named "annihilator" polynomial. An annihilator is a non-zero polynomial $f$ such that $G(f) = 0$. On Fibonacci, for example, examples of annihilators would be $x^3 - x^2 - x^1$ or $x^6 - x^5 - x^4$. Remember that $G$ turns polynomial terms into Fibonacci terms. So, plugging in the last annihilator into $G$ provides us $G(x^6 - x^5 - x^4) \implies F_6 - F_5 - F_4 = 0 \implies F_6 = F_4 + F_5$. In other words, the 6th Fibonacci term is equal to the 5th and 4th Fibonacci terms added together.
 
 This last statement is clearly true. After all, that's the definition of Fibonacci.
 

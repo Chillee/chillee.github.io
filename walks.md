@@ -49,7 +49,7 @@ What if I told you that this problem has even more depth than you thought? What 
 
 To my knowledge, despite being a common problem, I have not seen this faster solution presented anywhere.
 
-Let's dive down the rabbit hole of solutions to this problem. We'll start with the solutions that have already been discussed, but then...
+Let's dive down the rabbit hole of solutions to this problem, starting from the top.
 
 
 ## The Brute Force Solution ($V \leq 5, K\leq 5$)
@@ -104,7 +104,7 @@ We can either do this iteratively (which allows us to reduce memory complexity b
 
 The complexity of this solution is $O(EK)$. So far, this seems like a standard DP problem. Most interviewers would probably be satisfied with this solution.
 
-But we aren't.
+We aren't.
 
 ## A Neat Trick With Adjacency Matrices ($V \leq 500, K \leq 1 \text{ billion}$)
 If there aren't many nodes, but $K$ is extremely large, then we need to give up on the above DP approach. The naive approach above finds the answer for "how many paths of length $K-1$" before it finds the answer to "how many paths of length $K$". As a result, even if we *could* find the answer for $K$ from the answer for $K-1$ in constant time, we wouldn't be able to solve this problem with the above constraints.
@@ -243,6 +243,8 @@ initial_terms = [dp[i][B] for i in 0..2*N]
 linear_recurrence = berlekamp_massey(initial_terms)
 ans = get_kth_term(linear_recurrence, initial_terms, K)
 ```
+
+Code for this last approach can be found [here.](./walks.cpp) Thanks to [KACTL](https://github.com/kth-competitive-programming/kactl) for the code templates.
 
 # Concluding Thoughts
 Hope you found this a neat rabbit hole to dive into! This problem is one that many may have encountered, whether in class or interviews. Although many of you may have written it off as a basic DP problem (or perhaps even after encountering the adjacency matrix interpretation), there's actually a lot deeper you can go with this problem.

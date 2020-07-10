@@ -6,7 +6,7 @@ hr {
   float: left;
 }
 body {
-    margin: 40px auto;
+    margin: 40px auto !important;
     max-width: 900px;
     line-height: 1.6;
     font-size: 18px;
@@ -20,7 +20,7 @@ h2,
 h3 {
     line-height: 1.2
 }
-span {
+.date {
     color: #aaa;
     font-family: Monaco,courier new,monospace;
     font-size: 80%;

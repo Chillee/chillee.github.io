@@ -49,6 +49,21 @@
     <hr>
     <li class="research_item">
       <div class="container grid-item">
+        <img src="img/gator.png" width="200px" style="float:left">
+      </div>
+      <b>Geometry Types for Graphics Programming</b>
+      <br>
+      Dietrich Geisler, Irene Yoon, Aditi Kabra, <b>Horace He</b>, Yinnon Sanders, Adrian Sampson
+      <br>
+      <a href="https://2020.splashcon.org/track/splash-2020-oopsla">OOPSLA 2020</a>
+      <br>
+      [<a href="https://www.cs.cornell.edu/~asampson/media/papers/gator-oopsla2020-preprint.pdf">Paper</a>] [<a href="https://twitter.com/samps/status/1315690803130519552">Twitter Thread</a>]
+      <br>
+      <b>TL;DR</b>: Incorrect usage of coordinate systems (such as adding a vector in model space to a vector in world space) is responsible for a class of geometry bugs. Even worse, these bugs tend to be extremely nasty - often, it's not obvious if you've even had a bug. Gator marks geometric objects with their coordinate system and reference frame. Not only does this prevent the class of bugs mentioned above, it also allows for automatic generation of transformation code from one space to another.
+    </li>
+    <hr>
+    <li class="research_item">
+      <div class="container grid-item">
         <img src="img/BSR.jpg" width="200px" style="float:left">
       </div>
       <b>Better Set Representations for Relational Reasoning</b>
@@ -78,7 +93,7 @@
       <br>
       <b>TL;DR</b>: By optimizing the orthogonal projection of our perturbation onto an existing perturbation in the feature space, we can improve transferability significantly. Choosing the layer at which we optimize the projection changes the transferability significantly. Pretty surprising that this works.
       <br>
-      <b>Open Question</b>: Why does this method work? We provide some guesses in the paper, but optimizing for the orthogonal projection obviously isn't fundamentally the <i>right</i> thing to do. After all, running this method on itself doesn't improve the results.
+      <b>Open Question</b>: Why does this method work? We provide some guesses in the paper, but optimizing for the orthogonal projection obviously isn't fundamentally the <i>right</i> thing to do. After all, recursively applying our method to the perturbations doesn't generate better perturbations.
     </li>
     <hr>
 

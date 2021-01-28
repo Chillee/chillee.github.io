@@ -45,7 +45,7 @@ He states of the most advanced level:
 
 And that's where he left the problem. Seems like a pretty cool problem with plenty of depth, doesn't it?
 
-What if I told you that this problem has even more depth than you thought? What if I told you, that drawing on concepts from coding theory, abstract algebra, and signal processing, we could solve this problem in $O(EV + V \log V \log K)$ time?
+As it turns out, this problem has even more depth than that Google interviewer thought. What if I told you, that drawing on concepts from coding theory, abstract algebra, and signal processing, we could solve this problem in $O(EV + V \log V \log K)$ time?
 
 To my knowledge, despite being a common problem, I have not seen this faster solution presented anywhere.
 
@@ -107,9 +107,9 @@ The complexity of this solution is $O(EK)$. So far, this seems like a standard D
 We aren't.
 
 ## A Neat Trick With Adjacency Matrices ($V \leq 500, K \leq 1 \text{ billion}$)
-If there aren't many nodes, but $K$ is extremely large, then we need to give up on the above DP approach. The naive approach above finds the answer for "how many paths of length $K-1$" before it finds the answer to "how many paths of length $K$". As a result, even if we *could* find the answer for $K$ from the answer for $K-1$ in constant time, we wouldn't be able to solve this problem with the above constraints.
+If there aren't many nodes but $K$ is extremely large, then we need to give up on the above DP approach. The naive approach above finds the answer for "how many paths of length $K-1$" before it finds the answer to "how many paths of length $K$". As a result, even if we *could* find the answer for $K$ from the answer for $K-1$ in constant time, we wouldn't be able to solve this problem with the above constraints.
 
-There's 2 ways to proceed. The first is to note that we don't actually *need* the answer for $K-1$ before we can find the answer for $K$. For example, if we know that that there are 3 paths of length 50 from A to C and 4 paths of length 50 from C to B, then there are $3 \cdot 4$ paths of length 100 from A to B with C at the midpoint. More generally, consider any node C. The number of paths from A to B of length $K$ that include C at the midpoint is the number of paths from A to C of half length multiplied by the number of paths from C to B of half length. If we sum over all possible nodes for C, then we have our answer for $K$.
+There's 2 different ways to proceed. The first is to note that we don't actually *need* the answer for $K-1$ before we can find the answer for $K$. For example, if we know that that there are 3 paths of length 50 from A to C and 4 paths of length 50 from C to B, then there are $3 \cdot 4$ paths of length 100 from A to B with C at the midpoint. More generally, consider any node C. The number of paths from A to B of length $K$ that include C at the midpoint is the number of paths from A to C of half length multiplied by the number of paths from C to B of half length. If we sum over all possible nodes for C, then we have our answer for $K$.
 
 ```dot {align="center"}
 digraph G {
@@ -128,10 +128,11 @@ digraph G {
 
 This allows us to remove our linear dependence on $K$ and transforms it into a logarithmic one, for a $ V^3 \log K$ algorithm.
 
-Using graph theory, however, there's an even easier way to come up with this algorithm. One representation for graphs is as an adjacency matrix $A$. If one views the values in $A_{ij}$ as the number of edges between $i$ and $j$, then $A_{ij}^k$ represents the number of paths between $i$ and $j$ of length $k$.
+Using graph theory, however, there's an even easier way to come up with this algorithm. One way to represent graphs is as an adjacency matrix $A$. If one views the values in $A_{ij}$ as the number of edges between $i$ and $j$, then $A_{ij}^k$ represents the number of paths between $i$ and $j$ of length $k$.
 
 Thus, this problem has been reduced to computing $A^k$ (i.e: matrix power). This is a standard problem that can be done in $V^3 \log K$ time through [binary exponentiation](https://news.ycombinator.com/item?id=22946710).
 
+The two approaches outlined above,
 The second approach can be thought of as an abstraction of the first approach to standard concepts like matrix exponentiation.[^exponential]
 
 

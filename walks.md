@@ -275,8 +275,8 @@ If the matrix was diagonalizable (e.g: undirected graph), and we weren't computi
 For directed graphs, we could also compute the Jordan Normal Form, but we run into the same issues.
 
 
-[^walkpath]: - Some computer scientists will tell you that the correct terminology should be walk, but I suspect most programmers are more familiar with the term "path". Solving this problem for actual (simple) paths is NP-Complete, as setting $K=N$ reduces this problem to Hamiltonian Path.
-[^fibonacci]: - My suspicion is that programmers love to pretend they're mathematicians.
-[^cayley]: - I suppose this is the right place to confess that when Cayley Hamilton was first presented in my math classes, I did not understand my textbook's enthusiasm about the beauty of the Cayley Hamilton theorem. However, I found this application much more convincing.
-[^fft]: - If you don't understand how to use FFT to compute polynomial multiplication in $N \log N$ time, I highly recommend learning about it [here](http://jeffe.cs.illinois.edu/teaching/algorithms/notes/A-fft.pdf). Not only is it a very cool concept that'll teach you things about polynomials and complex numbers, it will also teach you about the difficulty of writing efficient array code when your naive FFT runs 3 orders of magnitude slower than a good one, despite having the same complexity.
-[^2]: - This is a general property of Euclidean rings.
+[^walkpath]: Some computer scientists will tell you that the correct terminology should be walk, but I suspect most programmers are more familiar with the term "path". Solving this problem for actual (simple) paths is NP-Complete, as setting $K=N$ reduces this problem to Hamiltonian Path.
+[^fibonacci]: My suspicion is that programmers love to pretend they're mathematicians.
+[^cayley]: I suppose this is the right place to confess that when Cayley Hamilton was first presented in my math classes, I did not understand my textbook's enthusiasm about the beauty of the Cayley Hamilton theorem. However, I found this application much more convincing.
+[^fft]: If you don't understand how to use FFT to compute polynomial multiplication in $N \log N$ time, I highly recommend learning about it [here](http://jeffe.cs.illinois.edu/teaching/algorithms/notes/A-fft.pdf). Not only is it a very cool concept that'll teach you things about polynomials and complex numbers, it will also teach you about the difficulty of writing efficient array code when your naive FFT runs 3 orders of magnitude slower than a good one, despite having the same complexity.
+[^2]: This is a general property of Euclidean rings.

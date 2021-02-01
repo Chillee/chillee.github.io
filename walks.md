@@ -223,7 +223,7 @@ As this point, an astute reader might point out that although, due to Cayley Ham
 
 I couldn't tell you what a Linear Feedback Shift Register is, but I **can** tell you what Berlekamp Massey does. Given a sequence of terms, it finds the shortest linear recurrence that fits all of the terms. If you pass in $2L$ terms, it's guaranteed that the shortest linear recurrence is of order $\leq L$. For example, if you pass $1, 1, 2, 3$ it will provide you the Fibonacci sequence. And it'll do it in $N^2$ time! It's basically magic.
 
-There's only one last wrinkle - Berlekamp Massey doesn't operate on matrices. However, note that Cayley-Hamilton doesn't merely imply that the matrices satisfy some linear recurrence, it also implies that each individual element satisfies a linear recurrence. For example, $A^n_{0,0} = x_0 + x_1A_{0,0} + x_2A^2_{0,0}...$
+There's only one last wrinkle - Berlekamp Massey doesn't operate on matrices. However, note that Cayley-Hamilton doesn't merely imply that the matrices satisfy some linear recurrence, it also implies that each individual element satisfies a linear recurrence. [^elementwise] For example, $A^n_{0,0} = x_0 + x_1A_{0,0} + x_2A^2_{0,0}...$
 
 Thus, if we're trying to count the number of paths from node A to node B, we can simply pass $I_{a,b}, A_{a,b},A^2_{a,b}...$ to Berlekamp-Massey. As our linear recurrence is order $N$, we need to pass in the first $2N$ terms of $A^i$.
 
@@ -278,5 +278,6 @@ For directed graphs, we could also compute the Jordan Normal Form, but we run in
 [^walkpath]: Some computer scientists will tell you that the correct terminology should be walk, but I suspect most programmers are more familiar with the term "path". Solving this problem for actual (simple) paths is NP-Complete, as setting $K=N$ reduces this problem to Hamiltonian Path.
 [^fibonacci]: My suspicion is that programmers love to pretend they're mathematicians.
 [^cayley]: I suppose this is the right place to confess that when Cayley Hamilton was first presented in my math classes, I did not understand my textbook's enthusiasm about the beauty of the Cayley Hamilton theorem. However, I found this application much more convincing.
+[^elementwise]: Two matrices are equal iff each element is equal. For example, if you have $A = B + C$, then you know that $A_{0,0} = B_{0,0} + C_{0,0}$.
 [^fft]: If you don't understand how to use FFT to compute polynomial multiplication in $N \log N$ time, I highly recommend learning about it [here](http://jeffe.cs.illinois.edu/teaching/algorithms/notes/A-fft.pdf). Not only is it a very cool concept that'll teach you things about polynomials and complex numbers, it will also teach you about the difficulty of writing efficient array code when your naive FFT runs 3 orders of magnitude slower than a good one, despite having the same complexity.
 [^2]: This is a general property of Euclidean rings.

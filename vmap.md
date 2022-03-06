@@ -168,11 +168,11 @@ def f(a: Tensor[B, 5]) -> Tensor[B, 5]:
     result[false_idxs] = false_batch
     return result
 ```
-Although this has the advantage of not performing redundant computation, it comes at the cost of being far more dynamic. Whether this is faster or not probably depends on what you're computing.
+Although this has the advantage of not performing redundant computation, it comes at the cost of being far more dynamic. Whether this is faster or not depends on what you're computing.
 </details>
 
 ## An Example Vmap Implementation
-Now, let's walk through an example vmap implementation. I'll be implementing this in PyTorch FX, which is a framework for writing function transformations on top of PyTorch. The implementation should be fairly similar if you write it on top of jaxprs. However, I'm scared of jaxprs and FX has the advantage that it's a Python to Python transformation, which I think will help clarify what's happening. Also, I already did it in FX so I have the code lying around. However, much of what I write is based off Jax's [non-kiddy implementation of vmap](https://github.com/google/jax/blob/master/jax/interpreters/batching.py), so check that out!
+Now, let's walk through a baby vmap implementation. I'll be implementing this in PyTorch FX, which is a framework for writing function transformations on top of PyTorch. The implementation should be fairly similar if you write it on top of jaxprs. However, I'm more used to FX, and FX has the advantage that it's a Python to Python transformation, which I think will help clarify what's happening. Also, I already did it in FX so I have the code lying around. However, much of what I write is based off Jax's [non-kiddy implementation of vmap](https://github.com/google/jax/blob/master/jax/interpreters/batching.py), so check that out!
 
 ### High Level Approach
 In the previous section, we wrote about how to batch individual operations. However, how do we batch an entire function? How do things that aren't batched and batched interact?

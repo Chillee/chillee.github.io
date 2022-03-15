@@ -15,7 +15,6 @@
       
       
       
-      
       <style>
       /**
  * prism.js Github theme based on GitHub's theme.
@@ -267,8 +266,7 @@ pre[data-line] .line-highlight[data-end]:after {
       <h1 class="mume-header" id="making-deep-learning-go-brrrr-from-first-principles">Making Deep Learning Go Brrrr From First Principles</h1>
 
 <p>So, you want to improve the performance of your deep learning model. How might you approach such a task? Often, folk fall back to a grab-bag of tricks that might&apos;ve worked before or saw on a tweet. &quot;Use in-place operations! Set gradients to None! Install PyTorch 1.10.0 but not 1.10.1!&quot;</p>
-<p>It&apos;s understandable why users often take such an ad-hoc approach performance on modern systems (particularly deep learning) often feels as much like alchemy as it do<br>
-es science. That being said, reasoning from first principles can still eliminate broad swathes of approaches, thus making the problem much more approachable.</p>
+<p>It&apos;s understandable why users often take such an ad-hoc approach performance on modern systems (particularly deep learning) often feels as much like alchemy as it does science. That being said, reasoning from first principles can still eliminate broad swathes of approaches, thus making the problem much more approachable.</p>
 <p>For example, getting good performance on a dataset with deep learning also involves a lot of guesswork. But, if your training loss is way lower than your test loss, you&apos;re in the &quot;overfitting&quot; regime, and you&apos;re wasting your time if you try to increase the capacity of your model. Or, if your training loss is identical to your validation loss, you&apos;re wasting your time if you try to regularize your model.</p>
 <p>Similarly, you can understand efficient of your deep learning regime as consisting of 3 different components.</p>
 <ol>
@@ -343,7 +341,7 @@ x2 <span class="token operator">=</span> x1<span class="token punctuation">.</sp
 <h4 class="mume-header" id="reasoning-about-memory-bandwidth-costs">Reasoning about Memory-Bandwidth Costs</h4>
 
 <p>When it come to reasoning about whether your operation is memory-bandwidth bound, a calculator can go a long way.</p>
-<p>For simple operators, it&apos;s feasible to reason about your memory bandwidth directly. For example, an A100 has 1.5 terabytes/second of global memory bandwidth, and can perform 19.5 teraflops/second of compute. So, if you&apos;re using 32 bit floats (i.e. 8 bytes), you can load in 200 billion numbers in the same time that the GPU can perform 20 trillion operations. Moreover, to perform a simple unary operator (like multiplying a tensor by 2), we actually need to <em>write</em> the tensor back to global memory.</p>
+<p>For simple operators, it&apos;s feasible to reason about your memory bandwidth directly. For example, an A100 has 1.5 terabytes/second of global memory bandwidth, and can perform 19.5 teraflops/second of compute. So, if you&apos;re using 32 bit floats (i.e. 4 bytes), you can load in 400 billion numbers in the same time that the GPU can perform 20 trillion operations. Moreover, to perform a simple unary operator (like multiplying a tensor by 2), we actually need to <em>write</em> the tensor back to global memory.</p>
 <p>So... until you&apos;re doing about a hundred operations in your unary operator, you&apos;ll be spending more time performing memory accesses than actual compute.</p>
 <p>With the help of a fusing compiler like NVFuser, it&apos;s actually fairly easy to measure this ourselves! You can see the code in Colab <a href="https://colab.research.google.com/drive/1hEtorT5y9mcXHR0gpensD7oZfuyyxtu7?usp=sharing">here</a>.</p>
 <p>If you take a PyTorch function like</p>

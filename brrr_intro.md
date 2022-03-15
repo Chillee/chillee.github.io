@@ -17,7 +17,7 @@ So, if you want to keep your GPUs going brrrr, let's discuss the three component
 
 <figure>
 <center><img src="img/perf_intro/gpus_go_brrr.webp"></center>
-<figcaption align = "center"><i>Behind the bitter lesson is a legion of engineers keeping GPUs running efficiently</i></figcaption>
+<figcaption align = "center"><i>Behind the bitter lesson is a legion of engineers keeping GPUs running efficiently. Image from [gwern](https://www.gwern.net/newsletter/2020/05)</i></figcaption>
 
 </figure>
 

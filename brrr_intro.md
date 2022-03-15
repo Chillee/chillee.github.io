@@ -1,16 +1,17 @@
 # Making Deep Learning Go Brrrr From First Principles
 So, you want to improve the performance of your deep learning model. How might you approach such a task? Often, folk fall back to a grab-bag of tricks that might've worked before or saw on a tweet. "Use in-place operations! Set gradients to None! Install PyTorch 1.10.0 but not 1.10.1!"
 
-It's understandable why users often take such an ad-hoc approach - performance on modern systems (particularly deep learning) often feels as much like alchemy as it does science. That being said, even when it's incomplete, reasoning from first principles can still eliminate broad swathes of approaches, and make the problem much more approachable.
+It's understandable why users often take such an ad-hoc approach performance on modern systems (particularly deep learning) often feels as much like alchemy as it do
+es science. That being said, reasoning from first principles can still eliminate broad swathes of approaches, thus making the problem much more approachable.
 
 For example, getting good performance on a dataset with deep learning also involves a lot of guesswork. But, if your training loss is way lower than your test loss, you're in the "overfitting" regime, and you're wasting your time if you try to increase the capacity of your model. Or, if your training loss is identical to your validation loss, you're wasting your time if you try to regularize your model.
 
 Similarly, you can understand efficient of your deep learning regime as consisting of 3 different components. 
-1. Compute: Time spent on your GPU computing actual FLOPS
+1. Compute: Time spent on your GPU computing actual floating point operations (FLOPS)
 2. Memory: Time spent transferring tensors within a GPU
 3. Overhead: Everything else
 
-Just like with training ML models, knowing what regime you're in allows you to narrow in on optimizations that matters. For example, if you're spending all of your time doing memory transfers (i.e. you are in an *memory-banwidth bound* regime), then increasing the FLOPS of your GPU won't help. On the other hand, if you're spending all of your time performing big chonky matmuls (i.e. a *compute-bound* regime), then rewriting your model logic into C++ to reduce overhead won't help.
+Just like with training ML models, knowing what regime you're in allows you to narrow in on optimizations that matters. For example, if you're spending all of your time doing memory transfers (i.e. you are in an *memory-bandwidth bound* regime), then increasing the FLOPS of your GPU won't help. On the other hand, if you're spending all of your time performing big chonky matmuls (i.e. a *compute-bound* regime), then rewriting your model logic into C++ to reduce overhead won't help.
 
 So, if you want to keep your GPUs going brrrr, let's discuss the three components your system might be spending time on - compute, memory bandwidth, and overhead.
 
@@ -31,7 +32,7 @@ Exacerbating the difficulty of maximizing compute utilization is the rate at whi
 
 ![](img/perf_intro/bw_moores_law.png)
 
-One way to think about compute is a factory. We send instructions to our factory (overhead), send it materials (memory-bandwidth), all to keep our factory running efficiently (compute).
+One way to think about compute is as a factory. We send instructions to our factory (overhead), send it materials (memory-bandwidth), all to keep our factory running efficiently (compute).
 
 <center><img src="img/perf_intro/factory.png" width="50%"></center>
 
@@ -39,10 +40,10 @@ So, if our factory increases efficiency faster than the rate at which we can sup
 
 <figure>
 <center><img src="img/perf_intro/factory_doubled.png" width="50%"></center>
-<figcaption align = "center"><i>Even though our factory's size (FLOPS) doubled - if our bandwidth can't keep up then our performance isn't also going to duble</i></figcaption>
+<figcaption align = "center"><i>Even though our factory's size (FLOPS) doubled - if our bandwidth can't keep up then our performance isn't also going to double</i></figcaption>
 </figure>
 
-Along with implying permanent job security for ML systems engineers, this growing dificulty in utilizing our compute also makes understanding our bottlenecks even more important.
+Along with implying permanent job security for ML systems engineers, this growing difficulty in utilizing our compute also makes understanding our bottlenecks even more important.
 
 
 One more addendum about FLOPS. Modern machine learning accelerators all have hardware specialized for matrix-multiplication, such as Nvidia's "Tensor Cores". 
@@ -71,7 +72,7 @@ The other two (typically referred to as "data transfer costs" and "network costs
 
 To understand what the memory bandwidth cost is, let's head back to our factory analogy.
 
-Although our factory is where we do the actual work, it's difficult to store large amounts of stuff at it. A large part of this is that since we're doing actual work here, all the storage is optimized for being fast to actually *use* (SRAM), instead of having a lot of it.
+Although our factory is where we do the actual work, it's not suitable as a bulk storage unit. A large part of this is that since we're doing actual work here, all the storage is optimized for being fast to actually *use* (SRAM), instead of having a lot of it.
 
 So, where do we store the actual results and materials? The typical approach is to have a warehouse, probably somewhere where land is cheap and we have a lot of space (DRAM). Then, we can ship supplies to and from our factories (memory bandwidth).
 
@@ -81,7 +82,7 @@ This cost of moving stuff to and from our compute units is what's called the "me
 
 One thing to note is that every single time we perform a GPU kernel, we need to move our data from and back to our GPU's DRAM (i.e. our warehouse).
 
-Now, imagine what happens when we're perform an unary operation like `torch.cos`. We need to ship our data from our storage to the warehouse, then perform a tiny bit of computation for each piece of data, and then ship that storage back. Shipping things around is quite expensive. As a result, nearly all of our time here is spent shipping data around, and *not* on the actual computation itself.
+Now, imagine what happens when we perform an unary operation like `torch.cos`. We need to ship our data from our storage to the warehouse, then perform a tiny bit of computation for each piece of data, and then ship that storage back. Shipping things around is quite expensive. As a result, nearly all of our time here is spent shipping data around, and *not* on the actual computation itself.
 
 Since we're spending all of our time on memory-bandwidth, such an operation is called a **memory-bound operation**, and it means that we're not spending a lot of time on compute.
 
@@ -120,7 +121,7 @@ There are a couple of caveats that make this a bit tricky. First of all, the GPU
 
 Not all operator fusion is as simple as pointwise operators. You can fuse pointwise operators onto reductions, or pointwise operators onto matrix multiplication. Even matrix multiplication itself can be thought of as fusing a broadcasting multiply followed by a reduction.
 
-If you're interested in writing custom CUDA kernels, it's likely that this is where you'll see the most benefit. Any 2 PyTorch operators is a chance to fuse them together and save the memory bandwidth costs of reading/writing out to global memory between them. In addition, many existing compilers can often perform "simple" fusions - NVFuser and XLA being two examples. However, automated systems are no match for human ingenuity, so if you want to try out writing some custom CUDA kernels yourself, [Triton](https://openai.com/blog/triton/) is a great place to start.
+If you're interested in writing custom CUDA kernels, it's likely that this is where you'll see the most benefit. Any 2 PyTorch operators present an opportunity for fusion, thus saving the memory bandwidth costs of reading/writing out to global memory between them. In addition, many existing compilers can often perform "simple" fusions - NVFuser and XLA being two examples. However, automated systems are no match for human ingenuity, so if you want to try out writing some custom CUDA kernels yourself, [Triton](https://openai.com/blog/triton/) is a great place to start.
 
 Finally, operator fusion leads to some surprising consequences. For one, a fused `x.cos().cos()` will take nearly the exact same time as calling `x.cos()` by itself. This is why activation functions are nearly all the same cost, despite `gelu` obviously consisting of many more operations than `relu`. 
 
@@ -128,7 +129,7 @@ This fact leads to some interesting consequences for rematerialization/activatio
 
 
 #### Reasoning about Memory-Bandwidth Costs
-When it come to reasoning about whether your operation is memory-bandwidth bound, a calculator is your best friend.
+When it come to reasoning about whether your operation is memory-bandwidth bound, a calculator can go a long way.
 
 For simple operators, it's feasible to reason about your memory bandwidth directly. For example, an A100 has 1.5 terabytes/second of global memory bandwidth, and can perform 19.5 teraflops/second of compute. So, if you're using 32 bit floats (i.e. 8 bytes), you can load in 200 billion numbers in the same time that the GPU can perform 20 trillion operations. Moreover, to perform a simple unary operator (like multiplying a tensor by 2), we actually need to *write* the tensor back to global memory.
 
@@ -200,14 +201,15 @@ Another way is to use the PyTorch profiler. Here, the pink lines actually show h
 <figcaption align = "center"><i>Our CPU runs wayyy ahead of the GPU</i></figcaption>
 </figure>
 
-
+Another aside - the "GPU-Util" ([not "Volatile GPU-Util"](https://twitter.com/cHHillee/status/1500547396945670144)) entry in nvidia-smi is basically measuring what percentage of the bottom row is actually running a GPU kernel. So that's another good way of eyeballing overhead.
 
 The primary reason this overhead exists is due to all of the flexibility frameworks like PyTorch have. Essentially, a lot of time needs to be spent on "figuring out what to do". 
 
 This might be from Python (looking up attributes or dispatching to the right function) or code in PyTorch (all of PyTorch's [dispatcher](http://blog.ezyang.com/2020/09/lets-talk-about-the-pytorch-dispatcher/)). For example, when you do `a + b`, the following steps need to happen.
 
 1. Python needs to look up what `__add__` dispatches to on `a`.
-2. PyTorch needs to determine many attributes of the tensor (such as dtype, device, and whether autograd is needed) before finally calling the actual kernel.
+2. PyTorch needs to determine many attributes of the tensor (such as dtype, device, and whether autograd is needed) to determine which kernel to call.
+3. PyTorch needs to actually launch the kernel.
 
 Fundamentally, this overhead comes from the flexibility of being able to do something different at each step. If you don't need this flexibility, one way of resolving this flexibility is by tracing it out, like with `jit.trace`, `FX`, or `jax.jit`. Or, alternately, you could do it at an even lower level with something like [CUDA Graphs](https://pytorch.org/blog/accelerating-pytorch-with-cuda-graphs/).
 
@@ -227,6 +229,9 @@ Often, I see researchers and other folks interested in speeding up their PyTorch
 Of course, arguably, users needing to think about this stuff at all reflects a failure on the part of the framework. PyTorch's compiler or profile APIs haven't always been the ... easiest to work with, although it is an active area of focus.
 
 Regardless, I find understanding of basic principles of systems to nearly always be useful - hopefully this was useful to you as well.
+
+#### Acknowledgements
+Thanks to Emily Shen, Qian Huang, and folks on EleutherAI for reading earlier drafts of this blog post and providing feedback.
 
 [^batch_size]: This isn't *strictly* the only reason why increasing batch size might not increase computational time accordingly - in certain regimes it also increases computational intensity. For example, in a MLP you're typically doing [B, D] x [D, D] matmuls. If B is less than D (say, your batch size is 1 while your hidden dim is 128), then you might negligibly increase your total memory bandwidth, while doubling your compute. I couldn't figure out a way to explain this nuance easily though.
 [^fma]:  This might not be what you see on the spec sheet, where it says 19.5 teraflops. The reason for this is that GPUs have even *more* specialized hardware for fused multiply and add (FMA) instructions. So, for fully general purpose computation, an A100 actually only achieves 9.75 teraflops. 

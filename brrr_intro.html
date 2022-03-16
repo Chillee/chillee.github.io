@@ -1,4 +1,5 @@
 <!DOCTYPE html><html><head>
+      <title>walks</title>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -9,8 +10,17 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-      
-      
+
+<link rel="stylesheet" type="text/css" href="index.css">
+<nav class="menu">
+    <ul class="menu__list">
+      <li class="menu__group"><a href="index.html" class="menu__link">Horace He</a></li>
+      <li class="menu__group"><a href="research.html" class="menu__link">Research</a></li>
+      <li class="menu__group"><a href="writing.html" class="menu__link select__link">Writing</a></li>
+      <li class="menu__group"><a href="projects.html" class="menu__link">Code</a></li>
+      <li class="menu__group"><a href="cp.html" class="menu__link">Competition</a></li>
+    </ul>
+  </nav>
       
       
       
@@ -424,7 +434,15 @@ x2 <span class="token operator">=</span> x1<span class="token punctuation">.</sp
 <h4 class="mume-header" id="acknowledgements">Acknowledgements</h4>
 
 <p>Thanks to Emily Shen, Qian Huang, and folks on EleutherAI for reading earlier drafts of this blog post and providing feedback.</p>
-<hr class="footnotes-sep">
+<h4 class="mume-header" id="bibtex-citation">BibTeX Citation</h4>
+
+<pre data-role="codeBlock" data-info class="language-"><code>@article{he2022brrrrfromfirstprinciples,
+  author={Horace He},
+  title={Making Deep Learning Go Brrrr From First Principles},
+  year={2022},
+  url={https://horace.io/brrr_intro.html},
+}
+</code></pre><hr class="footnotes-sep">
 <section class="footnotes">
 <ol class="footnotes-list">
 <li id="fn1" class="footnote-item"><p>This might not be what you see on the spec sheet, where it says 19.5 teraflops. The reason for this is that GPUs have even <em>more</em> specialized hardware for fused multiply and add (FMA) instructions. So, for fully general purpose computation, an A100 actually only achieves 9.75 teraflops. <a href="#fnref1" class="footnote-backref">&#x21A9;&#xFE0E;</a></p>

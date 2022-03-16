@@ -232,6 +232,17 @@ Regardless, I find understanding of basic principles of systems to nearly always
 #### Acknowledgements
 Thanks to Emily Shen, Qian Huang, and folks on EleutherAI for reading earlier drafts of this blog post and providing feedback.
 
+#### BibTeX Citation
+```
+@article{he2022brrrrfromfirstprinciples,
+  author={Horace He},
+  title={Making Deep Learning Go Brrrr From First Principles},
+  year={2022},
+  url={https://horace.io/brrr_intro.html},
+}
+```
+
+
 [^batch_size]: This isn't *strictly* the only reason why increasing batch size might not increase computational time accordingly - in certain regimes it also increases computational intensity. For example, in a MLP you're typically doing [B, D] x [D, D] matmuls. If B is less than D (say, your batch size is 1 while your hidden dim is 128), then you might negligibly increase your total memory bandwidth, while doubling your compute. I couldn't figure out a way to explain this nuance easily though.
 [^fma]:  This might not be what you see on the spec sheet, where it says 19.5 teraflops. The reason for this is that GPUs have even *more* specialized hardware for fused multiply and add (FMA) instructions. So, for fully general purpose computation, an A100 actually only achieves 9.75 teraflops. 
 [^flop_count]: There are a lot of way to count FLOPS, but this is actually fairly trivial to do in a nice way in PyTorch now - see https://dev-discuss.pytorch.org/t/the-ideal-pytorch-flop-counter-with-torch-dispatch/505

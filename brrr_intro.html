@@ -20,10 +20,10 @@
       <li class="menu__group"><a href="cp.html" class="menu__link">Competition</a></li>
     </ul>
   </nav>
-      
-      
-      
-      
+
+
+
+
       <style>
       /**
  * prism.js Github theme based on GitHub's theme.
@@ -242,7 +242,7 @@ pre[data-line] .line-highlight {
   white-space: pre;
 }
 
-pre[data-line] .line-highlight:before, 
+pre[data-line] .line-highlight:before,
 pre[data-line] .line-highlight[data-end]:after {
   content: attr(data-start);
   position: absolute;
@@ -359,7 +359,7 @@ x2 <span class="token operator">=</span> x1<span class="token punctuation">.</sp
         x <span class="token operator">=</span> x <span class="token operator">*</span> <span class="token number">2</span>
     <span class="token keyword keyword-return">return</span> x
 </pre><p>and benchmark it with a fusing compiler, we can then calculate the FLOPS and memory bandwidth achieved for various values of <code>repeat</code>. Increasing <code>repeat</code> is an easy way of increasing our amount of compute <em>without</em> increasing our memory accesses - this is also known as increasing <strong>compute intensity</strong>.</p>
-<p>Specifically, let&apos;s say we benchmark this code, and find the number of iterations we perform per second. Then, as a function of N (the size of our tensor), we&apos;ll perform <code>2*N</code> memory accesses, and <code>N * repeat</code> FLOP. So, the memory bandwidth achieved would be <code>bytes_per_elem * 2 * N / itrs_per_second</code>, and FLOPS achieved would be <code>N * repeat / itrs_per_second</code>.</p>
+<p>Specifically, let&apos;s say we benchmark this code, and find the number of iterations we perform per second. Then, as a function of N (the size of our tensor), we&apos;ll perform <code>2*N</code> memory accesses, and <code>N * repeat</code> FLOP. So, the memory bandwidth achieved would be <code>bytes_per_elem * 2 * N * itrs_per_second</code>, and FLOPS achieved would be <code>N * repeat * itrs_per_second</code>.</p>
 <p>Now, let&apos;s plot the runtime, flops, and memory bandwidth achieved as a function of the compute intensity. Note that everything is on a log-log scale.<br>
 <img src="img/perf_intro/microbench.png" alt></p>
 <p>First, notice that the runtime doesn&apos;t increase noticeably <em>at all</em> until we&apos;re performing 64 multiplications. That means that up until that point, we&apos;re mostly memory-bandwidth bound - our compute is mostly sitting idle.</p>
@@ -454,15 +454,15 @@ x2 <span class="token operator">=</span> x1<span class="token punctuation">.</sp
 </section>
 
       </div>
-      
-      
-    
-    
-    
-    
-    
-    
-    
-    
-  
+
+
+
+
+
+
+
+
+
+
+
     </body></html>

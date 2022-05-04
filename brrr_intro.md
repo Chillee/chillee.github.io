@@ -5,7 +5,7 @@ It's understandable why users often take such an ad-hoc approach performance on 
 
 For example, getting good performance on a dataset with deep learning also involves a lot of guesswork. But, if your training loss is way lower than your test loss, you're in the "overfitting" regime, and you're wasting your time if you try to increase the capacity of your model. Or, if your training loss is identical to your validation loss, you're wasting your time if you try to regularize your model.
 
-Similarly, you can understand efficient of your deep learning regime as consisting of 3 different components. 
+Similarly, you can understand efficient of your deep learning regime as consisting of 3 different components.
 1. Compute: Time spent on your GPU computing actual floating point operations (FLOPS)
 2. Memory: Time spent transferring tensors within a GPU
 3. Overhead: Everything else
@@ -25,7 +25,7 @@ Note: Most of this post will use GPUs and PyTorch as examples (as I work on the 
 ## Compute
 One perspective on optimizing deep learning systems is that we'd like to maximize the time in the compute-bound regime. You paid for all of those 312 teraflops, and ideally, you'd *get* those 312 teraflops. But, in order to get your money's worth out of your expensive matrix multiplication, you need to reduce the amount of time spent in the other parts.
 
-But why the focus on maximizing compute and not say, memory bandwidth? The reason is simple - you can reduce the overhead or memory costs, but you (mostly) can't reduce the computation required without changing the actual operations you're performing. 
+But why the focus on maximizing compute and not say, memory bandwidth? The reason is simple - you can reduce the overhead or memory costs, but you (mostly) can't reduce the computation required without changing the actual operations you're performing.
 
 Exacerbating the difficulty of maximizing compute utilization is the rate at which compute grows compared to memory bandwidth. Take [this table](https://cacm.acm.org/magazines/2004/10/6401-latency-lags-bandwith/fulltext) on CPU FLOPS doubling times vs. memory bandwidth doubling times
 
@@ -45,7 +45,7 @@ So, if our factory increases efficiency faster than the rate at which we can sup
 Along with implying permanent job security for ML systems engineers, this growing difficulty in utilizing our compute also makes understanding our bottlenecks even more important.
 
 
-One more addendum about FLOPS. Modern machine learning accelerators all have hardware specialized for matrix-multiplication, such as Nvidia's "Tensor Cores". 
+One more addendum about FLOPS. Modern machine learning accelerators all have hardware specialized for matrix-multiplication, such as Nvidia's "Tensor Cores".
 <center><img src="img/perf_intro/a100_specs.png" width="70%"></center>
 
 So, if you aren't doing matrix multiplication, you'll only be able to achieve 19.5 teraflops instead of the stated 312. Note that this isn't unique to GPUs - in fact, TPUs are even *less* general than GPUs.
@@ -122,7 +122,7 @@ Not all operator fusion is as simple as pointwise operators. You can fuse pointw
 
 If you're interested in writing custom CUDA kernels, it's likely that this is where you'll see the most benefit. Any 2 PyTorch operators present an opportunity for fusion, thus saving the memory bandwidth costs of reading/writing out to global memory between them. In addition, many existing compilers can often perform "simple" fusions - NVFuser and XLA being two examples. However, automated systems are no match for human ingenuity, so if you want to try out writing some custom CUDA kernels yourself, [Triton](https://openai.com/blog/triton/) is a great place to start.
 
-Finally, operator fusion leads to some surprising consequences. For one, a fused `x.cos().cos()` will take nearly the exact same time as calling `x.cos()` by itself. This is why activation functions are nearly all the same cost, despite `gelu` obviously consisting of many more operations than `relu`. 
+Finally, operator fusion leads to some surprising consequences. For one, a fused `x.cos().cos()` will take nearly the exact same time as calling `x.cos()` by itself. This is why activation functions are nearly all the same cost, despite `gelu` obviously consisting of many more operations than `relu`.
 
 This fact leads to some interesting consequences for rematerialization/activation checkpointing. Essentially, doing extra recomputation might lead to *less* memory-bandwidth, and thus less runtime. Thus, we can lower both memory *and* runtime through rematerialization, which we leveraged to build a neat min-cut optimization pass in AOTAutograd. You can read more about it [here](https://dev-discuss.pytorch.org/t/min-cut-optimal-recomputation-i-e-activation-checkpointing-with-aotautograd/467/1) (might also go into it in a future blog post!)
 
@@ -136,7 +136,7 @@ So... until you're doing about a hundred operations in your unary operator, you'
 
 With the help of a fusing compiler like NVFuser, it's actually fairly easy to measure this ourselves! You can see the code in Colab [here](https://colab.research.google.com/drive/1hEtorT5y9mcXHR0gpensD7oZfuyyxtu7?usp=sharing).
 
-If you take a PyTorch function like 
+If you take a PyTorch function like
 ```python
 def f(x: Tensor[N]):
     for _ in range(repeat):
@@ -145,7 +145,7 @@ def f(x: Tensor[N]):
 ```
 and benchmark it with a fusing compiler, we can then calculate the FLOPS and memory bandwidth achieved for various values of `repeat`. Increasing `repeat` is an easy way of increasing our amount of compute *without* increasing our memory accesses - this is also known as increasing **compute intensity**.
 
-Specifically, let's say we benchmark this code, and find the number of iterations we perform per second. Then, as a function of N (the size of our tensor), we'll perform `2*N` memory accesses, and `N * repeat` FLOP. So, the memory bandwidth achieved would be `bytes_per_elem * 2 * N / itrs_per_second `, and FLOPS achieved would be `N * repeat / itrs_per_second`.
+Specifically, let's say we benchmark this code, and find the number of iterations we perform per second. Then, as a function of N (the size of our tensor), we'll perform `2*N` memory accesses, and `N * repeat` FLOP. So, the memory bandwidth achieved would be `bytes_per_elem * 2 * N * itrs_per_second `, and FLOPS achieved would be `N * repeat * itrs_per_second`.
 
 Now, let's plot the runtime, flops, and memory bandwidth achieved as a function of the compute intensity. Note that everything is on a log-log scale.
 ![](img/perf_intro/microbench.png)
@@ -202,7 +202,7 @@ Another way is to use the PyTorch profiler. Here, the pink lines actually show h
 
 Another aside - the "GPU-Util" ([not "Volatile GPU-Util"](https://twitter.com/cHHillee/status/1500547396945670144)) entry in nvidia-smi is basically measuring what percentage of the bottom row is actually running a GPU kernel. So that's another good way of eyeballing overhead.
 
-The primary reason this overhead exists is due to all of the flexibility frameworks like PyTorch have. Essentially, a lot of time needs to be spent on "figuring out what to do". 
+The primary reason this overhead exists is due to all of the flexibility frameworks like PyTorch have. Essentially, a lot of time needs to be spent on "figuring out what to do".
 
 This might be from Python (looking up attributes or dispatching to the right function) or code in PyTorch (all of PyTorch's [dispatcher](http://blog.ezyang.com/2020/09/lets-talk-about-the-pytorch-dispatcher/)). For example, when you do `a + b`, the following steps need to happen.
 
@@ -217,7 +217,7 @@ Unfortunately, this comes at the cost of losing flexibility. One approach I'm ex
 ## Conclusion
 If you want to speed up your deep learning system, the most important thing is to understand what the bottleneck in your model is. That bottleneck determines what the appropriate way of speeding up your system is.
 
-Often, I see researchers and other folks interested in speeding up their PyTorch code try things out blindly without an understanding of what regime you're in. 
+Often, I see researchers and other folks interested in speeding up their PyTorch code try things out blindly without an understanding of what regime you're in.
 
 | Performance Regime      | Plausible Solutions |
 | ----------- | ----------- |
@@ -244,5 +244,5 @@ Thanks to Emily Shen, Qian Huang, and folks on EleutherAI for reading earlier dr
 
 
 [^batch_size]: This isn't *strictly* the only reason why increasing batch size might not increase computational time accordingly - in certain regimes it also increases computational intensity. For example, in a MLP you're typically doing [B, D] x [D, D] matmuls. If B is less than D (say, your batch size is 1 while your hidden dim is 128), then you might negligibly increase your total memory bandwidth, while doubling your compute. I couldn't figure out a way to explain this nuance easily though.
-[^fma]:  This might not be what you see on the spec sheet, where it says 19.5 teraflops. The reason for this is that GPUs have even *more* specialized hardware for fused multiply and add (FMA) instructions. So, for fully general purpose computation, an A100 actually only achieves 9.75 teraflops. 
+[^fma]:  This might not be what you see on the spec sheet, where it says 19.5 teraflops. The reason for this is that GPUs have even *more* specialized hardware for fused multiply and add (FMA) instructions. So, for fully general purpose computation, an A100 actually only achieves 9.75 teraflops.
 [^flop_count]: There are a lot of way to count FLOPS, but this is actually fairly trivial to do in a nice way in PyTorch now - see https://dev-discuss.pytorch.org/t/the-ideal-pytorch-flop-counter-with-torch-dispatch/505

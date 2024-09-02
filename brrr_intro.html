@@ -277,7 +277,7 @@ pre[data-line] .line-highlight[data-end]:after {
 <p>So, you want to improve the performance of your deep learning model. How might you approach such a task? Often, folk fall back to a grab-bag of tricks that might&apos;ve worked before or saw on a tweet. &quot;Use in-place operations! Set gradients to None! Install PyTorch 1.10.0 but not 1.10.1!&quot;</p>
 <p>It&apos;s understandable why users often take such an ad-hoc approach performance on modern systems (particularly deep learning) often feels as much like alchemy as it does science. That being said, reasoning from first principles can still eliminate broad swathes of approaches, thus making the problem much more approachable.</p>
 <p>For example, getting good performance on a dataset with deep learning also involves a lot of guesswork. But, if your training loss is way lower than your test loss, you&apos;re in the &quot;overfitting&quot; regime, and you&apos;re wasting your time if you try to increase the capacity of your model. Or, if your training loss is identical to your validation loss, you&apos;re wasting your time if you try to regularize your model.</p>
-<p>Similarly, you can understand efficient of your deep learning regime as consisting of 3 different components.</p>
+<p>Similarly, you can understand efficiency of your deep learning regime as consisting of 3 different components.</p>
 <ol>
 <li>Compute: Time spent on your GPU computing actual floating point operations (FLOPS)</li>
 <li>Memory: Time spent transferring tensors within a GPU</li>
